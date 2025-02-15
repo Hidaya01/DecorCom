@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Decor extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'description', 'price', 'stock_quantity', 'image', 'shop_id'];
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
+
     public function reviews()
     {
         return $this->hasMany(Review::class);
@@ -20,6 +28,11 @@ class Decor extends Model
 
     public function panier()
     {
-        return $this->belongsToMany(User::class, 'panier');
+        return $this->belongsToMany(User::class, 'panier')->withPivot('quantity');
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_items')->withPivot('quantity', 'subtotal_price');
     }
 }

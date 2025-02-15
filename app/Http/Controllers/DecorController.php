@@ -3,15 +3,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Decor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DecorController extends Controller
 {
     public function index()
     {
-        // Récupérer tous les décors
         $decors = Decor::all();
-        
-        // Passer les données à la vue
         return view('decors.index', compact('decors'));
     }
 
@@ -26,7 +24,13 @@ class DecorController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', //Ajout d'image de decor
         ]);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('decors', 'public');
+            $validatedData['image'] = $imagePath;
+        }
 
         Decor::create($validatedData);
 
@@ -49,7 +53,16 @@ class DecorController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', //Ajout d'image
         ]);
+
+        if ($request->hasFile('image')) {
+            if ($decor->image) {
+                Storage::disk('public')->delete($decor->image);
+            }
+            $imagePath = $request->file('image')->store('decors', 'public');
+            $validatedData['image'] = $imagePath;
+        }
 
         $decor->update($validatedData);
 
@@ -58,6 +71,9 @@ class DecorController extends Controller
 
     public function destroy(Decor $decor)
     {
+        if ($decor->image) {
+            Storage::disk('public')->delete($decor->image);
+        }
         $decor->delete();
         return redirect()->route('decors.index')->with('success', 'Décor supprimé avec succès.');
     }

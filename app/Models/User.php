@@ -12,35 +12,54 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isArtisan()
+    {
+        return $this->role === 'artisan';
+    }
+
+    public function isClient()
+    {
+        return $this->role === 'client';
+    }
+
+    // An artisan has one shop
+    public function shop()
+    {
+        return $this->hasOne(Shop::class);
+    }
+
+    // client can place multiple orders
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    //artisan receive orders to their shop
+    public function receivedOrders()
+    {
+        return $this->hasManyThrough(Order::class, Shop::class);
+    }
+
     public function favoris()
     {
         return $this->belongsToMany(Decor::class, 'favoris');
@@ -48,7 +67,7 @@ class User extends Authenticatable
 
     public function panier()
     {
-        return $this->belongsToMany(Decor::class, 'panier');
+        return $this->belongsToMany(Decor::class, 'panier')->withPivot('quantity');
     }
 
     public function reviews()

@@ -10,8 +10,8 @@ class ReviewController extends Controller
 {
     public function index()
     {
-        $reviews = Review::with('user', 'decor')->get();  // Récupérer les avis avec les informations utilisateur et décor
-        $decors = Decor::all();  // Récupérer tous les décors
+        $reviews = Review::with('user', 'decor')->get();  
+        $decors = Decor::all();  
         
         return view('reviews.index', compact('reviews', 'decors'));
     }

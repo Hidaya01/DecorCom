@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckAdmin
+class CheckRole
 {
     /**
      * Handle an incoming request.
@@ -15,9 +15,6 @@ class CheckAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user() && auth()->user()->role === 'admin') {
-            return $next($request);
-    }
-    return redirect('/');
+        return $next($request);
     }
 }

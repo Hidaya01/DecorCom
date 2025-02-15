@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('decors', function (Blueprint $table) {
+        Schema::create('shops', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
-            $table->decimal('price', 8, 2);
-            $table->integer('stock_quantity')->default(0);
-            $table->string('image')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // For Artisan 
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('decors');
+        Schema::dropIfExists('shops');
     }
 };

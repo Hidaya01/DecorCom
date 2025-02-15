@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->text('content');
-            $table->unsignedInteger('rating');
+            $table->unsignedInteger('rating')->checkbetween(1,5); //rating entre 1 et 5
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('decor_id')->constrained()->onDelete('cascade');
             $table->timestamps();
