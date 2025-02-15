@@ -29,6 +29,9 @@ Route::middleware(['auth'])->group(function () {
     
     //decors (CRUD)
     Route::resource('decors', DecorController::class);
+    Route::get('decors/{decor}', [DecorController::class, 'show'])->name('decors.show');
+Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
 
     // Utilisateurs(Admin seulement)
     Route::middleware('check.admin')->group(function () {

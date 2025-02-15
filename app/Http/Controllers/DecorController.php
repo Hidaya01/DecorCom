@@ -38,9 +38,11 @@ class DecorController extends Controller
     }
 
     public function show(Decor $decor)
-    {
-        return view('decors.show', compact('decor'));
-    }
+{
+    $decor->load('reviews.user'); // Eager load reviews and their users
+    return view('decors.show', compact('decor'));
+}
+
 
     public function edit(Decor $decor)
     {

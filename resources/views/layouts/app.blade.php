@@ -13,55 +13,56 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     
+    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}"> <!-- Path to your custom CSS file -->
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <nav class="navbar">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    DecorCom <!-- Here is the project name -->
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
+                <!-- if the user is logged in route to home else to welcome page -->
+            <a class="navbar-brand" href="{{ Auth::user() ? url('/home') : url('/') }}" style="color:white">
+                <img src="{{ asset('images/decorcom.png') }}" alt="DecorCom Logo" class="logo">   
+                DECORCOM
+            </a>
+
+                <!-- Toggler for mobile view -->
+                <button class="navbar-toggler" id="navbar-toggler">
+                    &#9776; <!-- Hamburger icon -->
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-                        <!-- Add any left side navbar items here if needed -->
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
+                <div class="navbar-links" id="navbar-links">
+                    <ul class="navbar-nav">
                         @guest
                             @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
+                                <li><a href="{{ route('login') }}">{{ __('Login') }}</a></li>
                             @endif
 
                             @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
+                                <li><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+
+                            @if (Auth::user()->role === 'client')
+                                <!-- navbar client -->
+                                <li><a href="{{ route('decors.index') }}">Décors</a></li>
+                                <li><a href="{{ route('cart.index') }}">🛒 Cart</a></li>
+                            @endif
+                            @if (Auth::user()->role === 'artisan')
+                                <!-- Artisan Links -->
+                                <li><a href="{{ route('decors.create') }}"> Add Décor</a></li>
+                                <li><a href="{{ route('decors.index') }}"> My Products</a></li>
+                            @endif
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle">
                                     {{ Auth::user()->name }}
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                <div class="dropdown-menu">
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>

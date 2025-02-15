@@ -21,34 +21,55 @@ class ReviewController extends Controller
         return view('reviews.create', compact('decors'));
     }
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'content' => 'required|string',
-            'rating' => 'required|numeric|min:1|max:5',
-            'user_id' => 'required|exists:users,id',
-            'decor_id' => 'required|exists:decors,id',
-        ]);
+{
+    $validatedData = $request->validate([
+        'content' => 'required|string',
+        'rating' => 'required|numeric|min:1|max:5',
+        'decor_id' => 'required|exists:decors,id',
+    ]);
 
-        Review::create($validatedData);
+    $review = Review::create([
+        'content' => $request->content,
+        'rating' => $request->rating,
+        'user_id' => auth()->id(),
+        'decor_id' => $request->decor_id,
+    ]);
 
-        return redirect()->back()->with('success', 'Avis ajouté avec succès.');
+    if (!$review) {
+        return back()->with('error', 'Review could not be saved.');
     }
 
-    public function update(Request $request, Review $review)
-    {
-        $validatedData = $request->validate([
-            'content' => 'required|string',
-            'rating' => 'required|numeric|min:1|max:5',
-        ]);
+    return redirect()->back()->with('success', 'Review added successfully.');
+}
 
-        $review->update($validatedData);
 
-        return redirect()->back()->with('success', 'Avis mis à jour avec succès.');
+    
+
+public function update(Request $request, Review $review)
+{
+    // Ensure user owns the review
+    if ($review->user_id !== auth()->id()) {
+        return redirect()->back()->with('error', 'Unauthorized');
     }
 
-    public function destroy(Review $review)
-    {
-        $review->delete();
-        return redirect()->back()->with('success', 'Avis supprimé avec succès.');
+    $validatedData = $request->validate([
+        'content' => 'required|string',
+        'rating' => 'required|numeric|min:1|max:5',
+    ]);
+
+    $review->update($validatedData);
+
+    return redirect()->back()->with('success', 'Review updated successfully.');
+}
+
+
+public function destroy(Review $review)
+{
+    if ($review->user_id !== auth()->id()) {
+        return redirect()->back()->with('error', 'Unauthorized');
     }
+
+    $review->delete();
+    return redirect()->back()->with('success', 'Review deleted successfully.');
+}
 }

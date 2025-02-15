@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
+    protected $fillable = ['content', 'rating', 'user_id', 'decor_id'];
+
     use HasFactory;
     public function user()
     {
