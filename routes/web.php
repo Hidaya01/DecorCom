@@ -30,7 +30,10 @@ Route::middleware(['auth'])->group(function () {
     //decors (CRUD)
     Route::resource('decors', DecorController::class);
     Route::get('decors/{decor}', [DecorController::class, 'show'])->name('decors.show');
-Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    //Import Export Excel
+    Route::post('decors/import', [DecorController::class, 'import'])->name('decors.import');
+    Route::get('decors/export', [DecorController::class, 'export'])->name('decors.export');
 
 
     // Utilisateurs(Admin seulement)
@@ -50,10 +53,10 @@ Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store'
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'update', 'destroy']);
 
     //Routes de Panier
-    Route::get('cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('cart/{decor}/add', [CartController::class, 'add'])->name('cart.add');
-    Route::delete('cart/{decor}/remove', [CartController::class, 'remove'])->name('cart.remove');
+    Route::resource('cart', CartController::class)->except(['create', 'show']);
     Route::post('cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+    Route::get('cart/pdf', [CartController::class, 'generatePDF'])->name('cart.pdf');
+
 });    
 
 //Pour tester

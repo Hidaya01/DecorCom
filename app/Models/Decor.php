@@ -26,9 +26,9 @@ class Decor extends Model
         return $this->belongsToMany(User::class, 'favoris');
     }
 
-    public function panier()
+    public function carts()
     {
-        return $this->belongsToMany(User::class, 'panier')->withPivot('quantity');
+        return $this->belongsToMany(User::class, 'carts')->withPivot('quantity');
     }
 
     public function orders()

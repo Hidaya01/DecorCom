@@ -1,0 +1,53 @@
+/* public/css/custom.css */
+
+/* Custom form styles */
+.form-container {
+    background-color: #f8f5f1; /* Light beige background */
+    border: 1px solid #95674d; /* Brown border */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h1 {
+    color: #95674d; /* Brown text color */
+}
+
+.form-container label {
+    color: #95674d; /* Brown text color */
+}
+
+.form-container .btn-primary {
+    background-color: #95674d;
+    border-color: #95674d;
+}
+
+.form-container .btn-primary:hover {
+    background-color: #7e563c; /* Slightly darker brown */
+}
+
+/* Custom card styles */
+.card {
+    border: 1px solid #95674d; /* Brown border */
+    border-radius: 8px;
+}
+
+.card-header, .btn-primary, .btn-outline-dark {
+    background-color: #95674d; /* Brown background */
+    border-color: #95674d; /* Brown border */
+    color: white; /* White text */
+}
+
+.card-body {
+    background-color: #f8f5f1; /* Light beige background */
+}
+
+.btn-primary:hover, .btn-outline-dark:hover {
+    background-color: #7e563c; /* Slightly darker brown */
+    border-color: #7e563c; /* Slightly darker brown */
+    color: white; /* White text */
+}
+
+.card-footer {
+    background-color: #f8f5f1; /* Light beige background */
+}

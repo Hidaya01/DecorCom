@@ -1,10 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>{{ $decor->name }}</h1>
-    <p>{{ $decor->description }}</p>
-    <p><strong>Price:</strong> ${{ $decor->price }}</p>
+<div class="container mt-5">
+<h1 class="text-center">Decor Details:</h1>
+
+    <div class="d-flex justify-content-center">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <img src="{{ $decor->image ? asset('storage/' . $decor->image) : asset('images/default-decor.jpg') }}" 
+                     class="card-img-top" 
+                     alt="{{ $decor->name }}">
+                
+                <div class="card-body">
+                    <h2 class="card-title">{{ $decor->name }}</h2>
+                    <p class="card-text">{{ Str::limit($decor->description, 100) }}</p>
+                    <p class="card-text"><strong>{{ $decor->price }} MAD</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Review Section -->
     <div class="mt-4">
@@ -19,11 +33,9 @@
                 <!-- Edit & Delete Buttons (Only for Review Owner) -->
                 @if (Auth::check() && Auth::id() === $review->user_id)
                     <div class="d-flex">
-                        <!-- Edit Button (Triggers Modal) -->
                         <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editReviewModal{{ $review->id }}">
                             Edit
                         </button>
-
                         <!-- Delete Form -->
                         <form action="{{ route('reviews.destroy', $review->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                             @csrf
@@ -32,7 +44,7 @@
                         </form>
                     </div>
 
-                    <!-- Edit Review Modal -->
+                    <!-- Edit Review -->
                     <div class="modal fade" id="editReviewModal{{ $review->id }}" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -96,7 +108,7 @@
             <textarea name="content" class="form-control" required></textarea>
         </div>
         
-        <button type="submit" class="btn btn-primary">Submit Review</button>
+        <button type="submit" class="btn btn-success">Submit Review</button>
     </form>
     @else
         <p><a href="{{ route('login') }}">Login</a> to leave a review.</p>

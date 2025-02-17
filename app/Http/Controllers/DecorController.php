@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use App\Models\Decor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
+use App\Imports\DecorImport;
+use App\Exports\DecorExport;
 
 class DecorController extends Controller
 {
@@ -79,4 +82,22 @@ class DecorController extends Controller
         $decor->delete();
         return redirect()->route('decors.index')->with('success', 'Décor supprimé avec succès.');
     }
+  
+
+public function import(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xls,xlsx,csv'
+    ]);
+
+    ExcelFacade::import(new DecorImport, $request->file('file'));
+
+    return redirect()->back()->with('success', 'Importation réussie.');
+}
+
+public function export()
+{
+    return ExcelFacade::download(new DecorExport, 'decors.xlsx');
+}
+
 }

@@ -1,0 +1,96 @@
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #fffbd9;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #95674d;
+}
+
+a {
+    color: #95674d;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #6c4a3a;
+    text-decoration: underline;
+}
+
+.btn-primary {
+    background-color: #95674d;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #6c4a3a;
+}
+
+.btn-success {
+    background-color: #6c4a3a;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #5a3c2e;
+}
+
+.btn-outline-dark {
+    border-color: #95674d;
+    color: #95674d;
+}
+
+.btn-outline-dark:hover {
+    background-color: #95674d;
+    color: white;
+}
+
+/* Card Styling */
+.card {
+    border: 1px solid #95674d;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    color: #95674d;
+    font-weight: bold;
+}
+
+.card-text {
+    color: #6c4a3a;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #95674d;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #f8f9fa;
+    text-decoration: underline;
+}
