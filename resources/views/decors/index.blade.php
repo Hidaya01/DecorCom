@@ -14,7 +14,6 @@
         @foreach($decors as $decor)
             <div class="col-md-4 mb-4">
                 <div class="card shadow-sm hover-scale">
-                    <!-- Custom Image Class Added -->
                     <img class="card-img-top custom-img" src="{{ $decor->image ? asset('storage/' . $decor->image) : asset('images/default-decor.jpg') }}" alt="{{ $decor->name }}">
                     <div class="card-body">
                         <h5 class="card-title" style="color: #95674d;">{{ $decor->name }}</h5>
@@ -49,26 +48,11 @@
             </div>
         @endforeach
     </div>
-
-    @if(auth()->user()->isArtisan())
-        <!-- Formulaire d'importation -->
-        <form action="{{ route('decors.import') }}" method="POST" enctype="multipart/form-data" class="mb-3">
-            @csrf
-            <div class="input-group">
-                <input type="file" name="file" class="form-control" required>
-                <button type="submit" class="btn btn-primary hover-scale">Importer</button>
-            </div>
-        </form>
-
-        <!-- Bouton d'exportation -->
-        <a href="{{ route('decors.export') }}" class="btn btn-outline-dark hover-scale">Exporter</a>
-    @endif
 </div>
 @endsection
 
 @push('styles')
 <style>
-    /* Custom Image Styling */
     .custom-img {
         width: 100%;       
         height: 250px;      
@@ -76,7 +60,6 @@
         object-position: center; 
     }
 
-    /* Card Styling */
     .card {
         border: none;
         border-radius: 15px;
@@ -89,7 +72,6 @@
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
-    /* Card Title and Text Styling */
     .card-title {
         color: #95674d;
         font-weight: bold;
@@ -99,7 +81,6 @@
         color: #5a5a5a;
     }
 
-    /* Button Styling */
     .btn {
         font-size: 16px;
         border-radius: 30px;
@@ -131,7 +112,6 @@
         border-color: #6B8E23;
     }
 
-    /* Hover Effects for Buttons and Cards */
     .hover-scale:hover {
         transform: scale(1.05);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);

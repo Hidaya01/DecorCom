@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\DecorController;
 use App\Http\Controllers\CartController;
+use App\Exports\CartExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 /*
 
@@ -31,9 +34,14 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('decors', DecorController::class);
     Route::get('decors/{decor}', [DecorController::class, 'show'])->name('decors.show');
     Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
-    //Import Export Excel
-    Route::post('decors/import', [DecorController::class, 'import'])->name('decors.import');
-    Route::get('decors/export', [DecorController::class, 'export'])->name('decors.export');
+    //Export Export Excel
+    Route::get('/cart/export', function () {
+        return Excel::download(new CartExport, 'cart.xlsx');
+    })->name('cart.export');
+    // Route::get('/decors', 'DecorController@index')->name('decors.index');
+   
+ 
+
 
 
     // Utilisateurs(Admin seulement)

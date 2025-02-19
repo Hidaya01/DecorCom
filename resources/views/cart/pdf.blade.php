@@ -22,16 +22,17 @@
         </thead>
         <tbody>
             @foreach($cart as $item)
-            <tr>
-                <td>{{ $item->decor->name }}</td>
-                <td>{{ $item->quantity }}</td>
-                <td>{{ number_format($item->decor->price, 2) }} MAD</td>
-                <td>{{ number_format($item->decor->price * $item->quantity, 2) }} MAD</td>
-            </tr>
+                @if($item->decor)
+                    <tr>
+                        <td>{{ $item->decor->name }}</td>
+                        <td>{{ $item->quantity }}</td>
+                        <td>{{ number_format($item->decor->price, 2) }} MAD</td>
+                        <td>{{ number_format($item->decor->price * $item->quantity, 2) }} MAD</td>
+                    </tr>
+                @endif
             @endforeach
         </tbody>
     </table>
-    <h3>Total: {{ number_format($cart->sum(fn($item) => $item->decor->price * $item->quantity), 2) }} MAD</h3>
+    <h3>Total: {{ number_format($cart->sum(fn($item) => $item->decor ? $item->decor->price * $item->quantity : 0), 2) }} MAD</h3>
 </body>
 </html>
-    

@@ -17,7 +17,7 @@ class ReviewController extends Controller
     }
     public function create()
     {
-        $decors = Decor::all();  // Récupérer tous les décors disponibles
+        $decors = Decor::all();  
         return view('reviews.create', compact('decors'));
     }
     public function store(Request $request)
@@ -47,7 +47,7 @@ class ReviewController extends Controller
 
 public function update(Request $request, Review $review)
 {
-    // Ensure user owns the review
+    
     if ($review->user_id !== auth()->id()) {
         return redirect()->back()->with('error', 'Unauthorized');
     }

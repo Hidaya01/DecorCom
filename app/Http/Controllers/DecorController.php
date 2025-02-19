@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Decor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
-use App\Imports\DecorImport;
-use App\Exports\DecorExport;
+
+
 
 class DecorController extends Controller
 {
@@ -27,7 +26,7 @@ class DecorController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', //Ajout d'image de decor
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', 
         ]);
 
         if ($request->hasFile('image')) {
@@ -42,7 +41,7 @@ class DecorController extends Controller
 
     public function show(Decor $decor)
 {
-    $decor->load('reviews.user'); // Eager load reviews and their users
+    $decor->load('reviews.user'); 
     return view('decors.show', compact('decor'));
 }
 
@@ -58,7 +57,7 @@ class DecorController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', //Ajout d'image
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
         ]);
 
         if ($request->hasFile('image')) {
@@ -84,20 +83,7 @@ class DecorController extends Controller
     }
   
 
-public function import(Request $request)
-{
-    $request->validate([
-        'file' => 'required|mimes:xls,xlsx,csv'
-    ]);
 
-    ExcelFacade::import(new DecorImport, $request->file('file'));
 
-    return redirect()->back()->with('success', 'Importation réussie.');
-}
-
-public function export()
-{
-    return ExcelFacade::download(new DecorExport, 'decors.xlsx');
-}
 
 }

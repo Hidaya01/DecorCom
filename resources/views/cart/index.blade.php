@@ -19,24 +19,26 @@
                 <tbody>
                     @php $total = 0; @endphp
                     @foreach($cartItems as $cartItem)
-                        <tr>
-                            <td>{{ $cartItem->decor->name }}</td>
-                            <td>{{ $cartItem->decor->price }} MAD</td>
-                            <td>{{ $cartItem->quantity }}</td>
-                            <td>{{ $cartItem->decor->price * $cartItem->quantity }} MAD</td>
-                            <td class="d-flex gap-2">
-                                <!-- Edit quantity -->
-                                <a href="{{ route('cart.edit', $cartItem->id) }}" class="btn btn-warning btn-sm hover-scale">Edit</a>
+                        @if($cartItem->decor)
+                            <tr>
+                                <td>{{ $cartItem->decor->name }}</td>
+                                <td>{{ $cartItem->decor->price }} MAD</td>
+                                <td>{{ $cartItem->quantity }}</td>
+                                <td>{{ $cartItem->decor->price * $cartItem->quantity }} MAD</td>
+                                <td class="d-flex gap-2">
+                                    <!-- Edit quantity -->
+                                    <a href="{{ route('cart.edit', $cartItem->id) }}" class="btn btn-warning btn-sm hover-scale">Edit</a>
 
-                                <!-- Delete item -->
-                                <form action="{{ route('cart.destroy', $cartItem->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm hover-scale" onclick="return confirm('Delete this item?')">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @php $total += $cartItem->decor->price * $cartItem->quantity; @endphp
+                                    <!-- Delete item -->
+                                    <form action="{{ route('cart.destroy', $cartItem->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm hover-scale" onclick="return confirm('Delete this item?')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @php $total += $cartItem->decor->price * $cartItem->quantity; @endphp
+                        @endif
                     @endforeach
                 </tbody>
             </table>
@@ -45,6 +47,9 @@
         <div class="d-flex justify-content-between align-items-center mt-4">
             <h4 class="mb-0" style="color: #95674d;">Total: {{ $total }} MAD</h4>
             <div class="d-flex gap-2">
+                <!-- Download cart as file Excel -->
+                <a href="{{ route('cart.export') }}" class="btn btn-outline-dark hover-scale">Exporter</a>
+
                 <!-- Download cart as PDF -->
                 <a href="{{ route('cart.pdf') }}" class="btn btn-outline-dark hover-scale">Download PDF</a>
 

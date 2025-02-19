@@ -121,4 +121,9 @@ class CartController extends Controller
 
         return $pdf->download('cart_products.pdf');
     }
+    public function export()
+    {
+        return Excel::download(new CartExport, 'cart.xlsx');
+    }
+
 }

@@ -7,12 +7,16 @@
             <div class="card">
                 <div class="card-header  text-black text-center">{{ __('Edit Decor') }}</div>
                 <div class="card-body">
-                    <form action="{{ route('decors.update', $decor) }}" method="POST">
+                    <form action="{{ route('decors.update', $decor) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
                             <label for="name" class="form-label">{{ __('Name') }}</label>
                             <input type="text" id="name" name="name" class="form-control" value="{{ $decor->name }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Image" class="form-label">{{ __('Image') }}</label>
+                            <input type="file" id="image" name="image" class="form-control" rows="4" >{{ $decor->image }}
                         </div>
                         
                         <div class="mb-3">

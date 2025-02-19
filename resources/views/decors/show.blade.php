@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <!-- Review Section -->
+   
     <div class="mt-4">
         <h3>Reviews</h3>
         @forelse($decor->reviews as $review)
@@ -30,7 +30,7 @@
                 <p>⭐ {{ $review->rating }}/5</p>
                 <p>{{ $review->content }}</p>
 
-                <!-- Edit & Delete Buttons (Only for Review Owner) -->
+              
                 @if (Auth::check() && Auth::id() === $review->user_id)
                     <div class="d-flex">
                         <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editReviewModal{{ $review->id }}">

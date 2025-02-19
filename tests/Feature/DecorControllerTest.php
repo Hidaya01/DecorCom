@@ -1,16 +1,16 @@
 <?php
-
 namespace Tests\Feature;
 
 use App\Models\Decor;
-use App\Models\User; // Ensure you have the User model
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\DecorsExport;
-use App\Imports\DecorsImport;
+use App\Http\Controllers\DecorController;
+
+
+
 
 class DecorControllerTest extends TestCase
 {
@@ -19,17 +19,21 @@ class DecorControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create(); // Create a user for authentication
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user); 
     }
 
     /** @test */
     public function it_can_display_the_index_page()
     {
+        ob_end_clean();  
+    
         $response = $this->actingAs($this->user)->get(route('decors.index'));
-
+    
         $response->assertStatus(200);
         $response->assertViewIs('decors.index');
     }
+    
 
     /** @test */
     public function it_can_store_a_new_decor()
@@ -97,37 +101,7 @@ class DecorControllerTest extends TestCase
         Storage::disk('public')->assertMissing('decors/test_image.jpg');
     }
 
-    /** @test */
-    public function it_can_import_decors_from_excel_file()
-    {
-        Storage::fake('local');
-
-        Excel::fake();
-
-        $file = UploadedFile::fake()->create('decors.xlsx');
-
-        $response = $this->actingAs($this->user)->post(route('decors.import'), [
-            'file' => $file,
-        ]);
-
-        $response->assertRedirect(route('decors.index'));
-        $response->assertSessionHas('success', 'Décors importés avec succès.');
-
-        Excel::assertImported('decors.xlsx');
-    }
 
     /** @test */
-    public function it_can_export_decors_to_excel_file()
-    {
-        Excel::fake();
     
-        $response = $this->actingAs($this->user)->get(route('decors.export'));
-    
-        $response->assertStatus(200);
-        $response->assertHeader('Content-Disposition', 'attachment; filename=decors.xlsx');
-    
-        Excel::assertDownloaded('decors.xlsx', function (DecorsExport $export) {
-            return true;
-        });
-    }
 }
